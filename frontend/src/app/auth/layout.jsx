@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 function FormLayout({ children }) {
   return (
     <Provider store={store}>
-      <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+      <div className="w-full lg:grid lg:h-screen lg:grid-cols-2 xl:h-screen overflow-hidden">
         <div className="flex items-center justify-center py-12">
           <div className="mx-auto grid w-[450px] gap-6">{children}</div>
         </div>
