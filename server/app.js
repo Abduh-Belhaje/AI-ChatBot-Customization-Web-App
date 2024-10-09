@@ -1,31 +1,40 @@
-// server.js
-require('dotenv').config();
-const express = require('express');
-const swaggerUi = require('swagger-ui-express');
-const swaggerJSDoc = require('swagger-jsdoc');
-const passport = require('passport');
-const connectDB = require('./config/db');
+require("dotenv").config();
+
+const express = require("express");
+const cors = require("cors");
+const swaggerUi = require("swagger-ui-express");
+const swaggerJSDoc = require("swagger-jsdoc");
+const passport = require("passport");
+const connectDB = require("./config/db");
+const authRoutes = require("./routes/authRoutes");
+
 const app = express();
-const authRoutes = require('./routes/authRoutes');
-
-
-const port = 3000;
+const port = process.env.PORT || 3000; // Use port from environment variables
 
 // Connect to the database
 connectDB();
 
-const swaggerOptions = require('./swagger.json');
+// Swagger configuration
+const swaggerOptions = require("./swagger.json");
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// Middleware
+app.use(express.json()); // Parse JSON request bodies
+app.use(passport.initialize()); // Initialize passport for authentication
+app.use(
+  cors({
+    origin: "http://localhost:4000", // Allow requests from frontend
+    methods: "GET,POST,PUT,DELETE", // Specify allowed HTTP methods
+    credentials: true, // Allow credentials (like cookies) if needed
+  })
+);
 
-//Middlewares
-app.use(express.json());
-app.use(passport.initialize());
+// Passport strategy
+require("./config/passport"); // Ensure the passport strategies are initialized
 
-require('./config/passport');
+// Routes
+app.use("/auth", authRoutes); // Setup auth routes
 
-// Set up the auth routes
-app.use('/auth', authRoutes);
-
+// Start the server
 app.listen(port, () => console.log(`Server running on port ${port}`));
