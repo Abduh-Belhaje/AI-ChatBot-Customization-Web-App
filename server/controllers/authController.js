@@ -32,7 +32,7 @@ exports.googleCallback = (req, res, next) => {
         const resp = await authService.authenticateUser(req.query.state, user);
         const respString = encodeURIComponent(JSON.stringify(resp));
         res.redirect(
-          `${process.env.CLIENT_APP_URl}/success?resp=${respString}`
+          `${process.env.CLIENT_APP_URl}/success?action=${req.query.state}&resp=${respString}`
         );
       } catch (error) {
         res.redirect(
