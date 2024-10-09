@@ -7,7 +7,7 @@ function FormLayout({ children }) {
   return (
     <Provider store={store}>
       <div className="w-full lg:grid lg:h-screen lg:grid-cols-2 xl:h-screen overflow-hidden">
-        <div className="flex items-center justify-center py-12">
+        <div className="flex items-center justify-center ">
           <div className="mx-auto grid w-[450px] gap-6">{children}</div>
         </div>
         <div className="hidden bg-muted lg:flex flex-col items-center justify-center p-8 text-center">
