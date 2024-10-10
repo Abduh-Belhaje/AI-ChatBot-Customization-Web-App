@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,25 +17,23 @@ import {
   registerUser,
   registerWithGoogle,
   registerWithGitHub,
+  googleAuth,
 } from "@/features/authSlice";
-import { Loader2, Mail, Lock, User, Github } from "lucide-react";
+import { Loader2, Mail, Github } from "lucide-react";
 
 function Register() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const { loading, error, user } = useSelector((state) => state.auth);
+  const { loading, error } = useSelector((state) => state.auth);
 
   const handleRegister = (e) => {
     e.preventDefault();
-    const userData = { firstName, lastName, email, password };
+    const userData = { email };
     dispatch(registerUser(userData));
   };
 
-  const handleGoogleRegister = () => {
-    dispatch(registerWithGoogle());
+  const handleGoogleRegister = async () => {
+    dispatch(googleAuth("register"));
   };
 
   const handleGitHubRegister = () => {
@@ -56,7 +53,6 @@ function Register() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleRegister} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4"></div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <div className="relative">
