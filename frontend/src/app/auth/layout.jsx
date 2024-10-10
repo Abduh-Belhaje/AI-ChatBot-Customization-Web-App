@@ -2,10 +2,13 @@
 import store from "@/redux/store";
 import React from "react";
 import { Provider } from "react-redux";
+import { Toaster } from "@/components/ui/sonner";
 
 function FormLayout({ children }) {
   return (
     <Provider store={store}>
+      <Toaster />
+
       <div className="w-full lg:grid lg:h-screen lg:grid-cols-2 xl:h-screen overflow-hidden">
         <div className="flex items-center justify-center ">
           <div className="mx-auto grid w-[450px] gap-6">{children}</div>

@@ -13,19 +13,24 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { useState, useEffect } from "react";
-import {
-  loginUser,
-  loginWithGitHub,
-  loginWithGoogle,
-} from "@/features/authSlice";
-import { Loader2, Mail, Lock, Github } from "lucide-react";
+import { googleAuth, loginUser, loginWithGitHub } from "@/features/authSlice";
+import { Loader2, Mail, Github } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 
 function Login() {
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.auth);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const errorParam = params.get("error");
+    if (errorParam) {
+      toast.error(decodeURIComponent(errorParam));
+    }
+  }, []);
 
   const handleLogin = () => {
     dispatch(loginUser({ email, password }));
@@ -36,14 +41,8 @@ function Login() {
   };
 
   const handleGoogleLogin = () => {
-    dispatch(loginWithGoogle());
+    dispatch(googleAuth("login"));
   };
-
-  useEffect(() => {
-    if (error) {
-      console.error("Login Error:", error);
-    }
-  }, [error]);
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
