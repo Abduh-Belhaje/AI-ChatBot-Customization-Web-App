@@ -7,6 +7,7 @@ const swaggerJSDoc = require("swagger-jsdoc");
 const passport = require("passport");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
+const aiRoutes = require("./routes/aiRoutes");
 
 const app = express();
 const port = process.env.PORT || 3000; // Use port from environment variables
@@ -34,7 +35,8 @@ app.use(
 require("./config/passport"); // Ensure the passport strategies are initialized
 
 // Routes
-app.use("/auth", authRoutes); // Setup auth routes
+app.use("/auth", authRoutes); 
+app.use("/openai", aiRoutes); 
 
 // Start the server
 app.listen(port, () => console.log(`Server running on port ${port}`));
