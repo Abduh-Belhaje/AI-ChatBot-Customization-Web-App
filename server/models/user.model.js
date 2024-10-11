@@ -2,20 +2,31 @@ const mongoose = require('mongoose')
 
 const UserSchema = mongoose.Schema(
     {
-        googleId: { type: String, required: true },
-        name: { type: String, required: true },
-        email: { type: String, required: true, unique: true },
+        oauthId: { type: String, required: true },
+        full_name: { type: String },
+        email: { type: String, unique: true },
+        auth_provider: { type: String },
         role: {
             type: String,
             required: true,
-            enum: ['ADMIN', 'USER'], 
-            default: 'USER' 
+            enum: ["ADMIN", "USER"],
+            default: "USER"
         },
+        job_profile: { type: String },
         picture: { type: String },
+        heard_about_us: { type: String },
+        business_name: { type: String },
+        business_type: { type: String },
+        department: { type: String },
+        app_utilisation: { type: String },
+        location: { type: String }
         // chatbots: [{ type: ObjectId, ref: 'ChatBot' }], 
     },
     {
-        timestamp: true,
+        timestamps: true,
+    },
+    {
+        strict: true
     }
 );
 

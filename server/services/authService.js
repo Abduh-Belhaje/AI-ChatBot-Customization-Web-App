@@ -3,8 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const authenticateUser = async (action, user) => {
     // Here we will check for the existence of the user based on sign-in or sign-up logic
-    let existingUser = await User.findOne({ googleId: user.id })
-    
+    let existingUser = await User.findOne({ oauthId: user.id })
     if (action === 'login') {
         if (!existingUser) {
             throw new Error("User account not found !")
@@ -14,19 +13,18 @@ const authenticateUser = async (action, user) => {
             throw new Error("User account already exist !")
         }
         existingUser = await User.create({
-            googleId: user.id,
-            email: user.emails[0]?.value,
-            name: user.displayName,
-            picture: user.photos[0]?.value
+            oauthId: user.id,
+            email: user.emails && user.emails.length > 0 ? user.emails[0].value : null,
+            picture: user.photos && user.photos.length > 0 ? user.photos[0].value : null,
+            location: user._json.location ? user._json.location : null,
+            auth_provider: user.provider
         });
-        
     }
-    
+
     return {
         token: generateToken(existingUser),
         user: {
             email: existingUser.email,
-            name: existingUser.name,
             picture: existingUser.picture
         }
     };
@@ -35,9 +33,9 @@ const authenticateUser = async (action, user) => {
 // Function to generate JWT token
 const generateToken = (user) => {
     return jwt.sign(
-        { id: user._id , email: user.email },
+        { id: user.oauthId, email: user.email, role: user.role },
         process.env.JWT_SECRET,
-        { expiresIn: process.env.JWT_EXPIRES_IN }
+        { expiresIn: '2h' }
     );
 };
 

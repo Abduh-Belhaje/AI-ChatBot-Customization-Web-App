@@ -8,6 +8,7 @@ const passport = require("passport");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const aiRoutes = require("./routes/aiRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 const port = process.env.PORT || 3000; // Use port from environment variables
@@ -37,6 +38,7 @@ require("./config/passport"); // Ensure the passport strategies are initialized
 // Routes
 app.use("/auth", authRoutes); 
 app.use("/openai", aiRoutes); 
+app.use("/users", userRoutes); 
 
 // Start the server
 app.listen(port, () => console.log(`Server running on port ${port}`));
